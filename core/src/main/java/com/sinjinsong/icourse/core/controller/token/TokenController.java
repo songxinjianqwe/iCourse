@@ -4,7 +4,6 @@ package com.sinjinsong.icourse.core.controller.token;
 import com.sinjinsong.icourse.common.exception.RestValidationException;
 import com.sinjinsong.icourse.common.security.domain.JWTUser;
 import com.sinjinsong.icourse.common.security.token.TokenManager;
-import com.sinjinsong.icourse.common.security.verification.VerificationManager;
 import com.sinjinsong.icourse.common.util.SpringContextUtil;
 import com.sinjinsong.icourse.core.domain.dto.user.LoginDTO;
 import com.sinjinsong.icourse.core.domain.dto.user.LoginSuccessResult;
@@ -42,8 +41,6 @@ public class TokenController {
     @Autowired
     private TokenManager tokenManager;
     @Autowired
-    private VerificationManager verificationManager;
-    @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private CosUtil cosUtil;
@@ -79,7 +76,7 @@ public class TokenController {
         if (result.hasErrors()) {
             throw new RestValidationException(result.getFieldErrors());
         }
-
+    
         LoginHandler loginHandler = SpringContextUtil.getBean("LoginHandler", loginDTO.getUserMode().toString().toLowerCase());
         //下面进行校验
         UserDO user = loginHandler.handle(loginDTO);
@@ -88,7 +85,6 @@ public class TokenController {
         if (user != null) {
             username = user.getUsername();
         }
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, loginDTO.getPassword());
         Authentication authentication;
         try {
@@ -106,8 +102,6 @@ public class TokenController {
         tokenManager.deleteToken(username);
         //申请新的token
         String token = tokenManager.createToken(username);
-        //验证结束，清除验证码
-        verificationManager.deleteVerificationCode(loginDTO.getCaptchaCode());
         return new LoginSuccessResult(user.getId(), username, token);
     }
 

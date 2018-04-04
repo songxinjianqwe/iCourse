@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author sinjinsong
@@ -12,6 +13,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  */
 @SpringBootApplication
 @EnableConfigurationProperties
+@ComponentScan("com.sinjinsong.icourse")
 @Slf4j
 public class iCourseApplication extends SpringBootServletInitializer {
 

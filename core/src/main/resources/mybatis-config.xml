@@ -27,10 +27,12 @@
     </settings>
 
     <typeHandlers>
-        <typeHandler handler="cn.sinjinsong.eshop.common.enumeration.conversion.OrderStatusTypeHandler"
-                     javaType="cn.sinjinsong.eshop.common.enumeration.order.OrderStatus"></typeHandler>
-        <typeHandler handler="cn.sinjinsong.eshop.common.enumeration.conversion.MessageStatusTypeHandler"
-                     javaType="cn.sinjinsong.eshop.common.enumeration.message.MessageStatus"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.OrderStatusTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.order.OrderStatus"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.UserStatusTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.user.UserStatus"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.ProductTypeTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.product.ProductType"></typeHandler>
         
     </typeHandlers>
 </configuration>

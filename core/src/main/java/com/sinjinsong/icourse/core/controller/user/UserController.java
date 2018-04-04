@@ -15,7 +15,6 @@ import com.sinjinsong.icourse.core.domain.dto.user.ResetPasswordDTO;
 import com.sinjinsong.icourse.core.domain.entity.user.UserDO;
 import com.sinjinsong.icourse.core.enumeration.user.UserStatus;
 import com.sinjinsong.icourse.core.exception.security.ActivationCodeValidationException;
-import com.sinjinsong.icourse.core.exception.security.UserStatusInvalidException;
 import com.sinjinsong.icourse.core.exception.user.PasswordNotFoundException;
 import com.sinjinsong.icourse.core.exception.user.QueryUserModeNotFoundException;
 import com.sinjinsong.icourse.core.exception.user.UserNotFoundException;
@@ -68,7 +67,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/query/{key}", method = RequestMethod.GET)
-    @PostAuthorize("(hasRole('ADMIN') and not returnObject.roles.contains(new cn.sinjinsong.eshop.common.domain.entity.user.RoleDO(1,'ROLE_ADMIN'))) or (returnObject.username ==  principal.username)")
+    @PostAuthorize("(hasRole('ADMIN') and not returnObject.roles.contains(new com.sinjinsong.icourse.core.domain.entity.user.RoleDO(1,'ROLE_ADMIN'))) or (returnObject.username ==  principal.username)")
     @ApiOperation(value = "按某属性查询用户", notes = "属性可以是id或username或email或手机号", response = UserDO.class, authorizations = {@Authorization("登录权限")})
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "未登录"),
@@ -105,28 +104,17 @@ public class UserController {
             throw new PasswordNotFoundException();
         }
         service.save(user);
-        return user;
-    }
-
-    @RequestMapping(value = "/{id}/mail_validation", method = RequestMethod.POST)
-    @ApiOperation(value = "为用户发送验证邮件，等待用户激活，若24小时内未激活需要重新注册")
-    public void sendActivationMail(@PathVariable("id") Long id) {
-        UserDO user = service.findById(id);
-        if (user == null) {
-            throw new UserNotFoundException(String.valueOf(id));
-        }
-        if (user.getUserStatus() != UserStatus.UNACTIVATED) {
-            throw new UserStatusInvalidException(user.getUserStatus().toString());
-        }
+        
         //生成邮箱的激活码
         String activationCode = UUIDUtil.uuid();
         //发送验证邮件
-        verificationManager.createVerificationCode(activationCode, String.valueOf(id), authenticationProperties.getActivationCodeExpireTime());
+        verificationManager.createVerificationCode(activationCode, String.valueOf(user.getId()), authenticationProperties.getActivationCodeExpireTime());
         log.info("{}     {}", user.getEmail(), user.getId());
         Map<String, Object> params = new HashMap<>();
         params.put("id", user.getId());
         params.put("activationCode", activationCode);
         emailService.sendHTML(user.getEmail(), "activation", params, null);
+        return user;
     }
 
     @RequestMapping(value = "/{id}/activation", method = RequestMethod.POST)

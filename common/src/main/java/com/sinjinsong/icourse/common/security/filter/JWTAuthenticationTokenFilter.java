@@ -22,12 +22,11 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
-
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
     private TokenManager tokenManager;
-
+    
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         //添加用户的角色，每个用户至少有一个user角色
         long roleId = roleDOMapper.findRoleIdByRoleName("ROLE_USER");
         roleDOMapper.insertUserRole(userDO.getId(), roleId);
-
+        
         //在Balance表中添加用户
         balanceDOMapper.insert(new BalanceDO(userDO, 0D, null));
     }

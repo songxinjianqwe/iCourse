@@ -26,6 +26,25 @@ spring:
   aop:
     auto: true
     proxy-target-class: true 
+  thymeleaf: 
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html # ;charset=<encoding> is added
+    cache: false
+    #邮箱
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: songxinjianzx@163.com
+    password: 201529sxj
+    default-encoding: utf-8
+    properties: 
+      mail:
+        smtp:
+          auth: true
+          timeout: 25000
 ## Mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml

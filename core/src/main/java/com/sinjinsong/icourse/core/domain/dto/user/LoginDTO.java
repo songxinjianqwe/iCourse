@@ -22,9 +22,5 @@ public class LoginDTO implements Serializable{
     @NotNull
     private String password;
     @NotNull
-    private String captchaCode;
-    @NotNull
-    private String captchaValue;
-    @NotNull
     private UserMode userMode;
 }
