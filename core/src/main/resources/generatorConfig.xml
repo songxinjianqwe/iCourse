@@ -41,16 +41,15 @@
             <property name="methodNameCalculator" value="default"/>
             <property name="rootInterface" value=""/>
         </javaClientGenerator>
-
-      
-        <table tableName="consumer_transaction_message"
-               domainObjectName="ConsumerTransactionMessageDO"
+        
+        <table tableName="institution_settlement"
+               domainObjectName="institutionSettlementDO"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               selectByExampleQueryId="false"
-                >
+               selectByExampleQueryId="false">
         </table>
+        
     </context>
 </generatorConfiguration>

@@ -14,8 +14,11 @@ public interface OrderService {
     PageInfo<OrderDO> findAll(Integer pageNum, Integer pageSize);
 
     PageInfo<OrderDO> findAllByCondition(OrderQueryConditionDTO queryDTO, Integer pageNum, Integer pageSize);
+
     OrderDO findById(Long orderId);
+
     void updateOrder(OrderDO order);
+
     void updateTimeOutOrders();
-    void finishOrder(OrderDO order);
+
 }

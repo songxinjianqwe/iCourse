@@ -1,5 +1,6 @@
 package com.sinjinsong.icourse.core.service.email.impl;
 
+
 import com.sinjinsong.icourse.core.exception.email.EmailTemplateNotFoundException;
 import com.sinjinsong.icourse.core.properties.EmailSubjectProperties;
 import com.sinjinsong.icourse.core.service.email.EmailService;

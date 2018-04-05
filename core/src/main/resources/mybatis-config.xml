@@ -15,7 +15,7 @@
         <setting name="aggressiveLazyLoading" value="false"/>
         <setting name="localCacheScope" value="STATEMENT"/>
         <setting name="multipleResultSetsEnabled" value="true"/>
-        <!-- select name as title from user 用于识别别名, -->
+        <!-- select username as title from student 用于识别别名, -->
         <setting name="useColumnLabel" value="true"/>
         <setting name="defaultStatementTimeout" value="25000"/>
         <!-- 开启驼峰命名转换，如：table中(create_time)->entity(createTime)这样在sql语句中就不需要使用as来显式的去定义别名 -->
@@ -29,10 +29,9 @@
     <typeHandlers>
         <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.OrderStatusTypeHandler"
                      javaType="com.sinjinsong.icourse.core.enumeration.order.OrderStatus"></typeHandler>
-        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.UserStatusTypeHandler"
-                     javaType="com.sinjinsong.icourse.core.enumeration.user.UserStatus"></typeHandler>
-        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.ProductTypeTypeHandler"
-                     javaType="com.sinjinsong.icourse.core.enumeration.product.ProductType"></typeHandler>
-        
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.StudentStatusTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.student.StudentStatus"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.InstitutionStatusTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.institution.InstitutionStatus"></typeHandler>
     </typeHandlers>
 </configuration>

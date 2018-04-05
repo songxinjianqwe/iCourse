@@ -1,9 +1,9 @@
 package com.sinjinsong.icourse.core.security;
 
+
 import com.sinjinsong.icourse.common.security.domain.JWTUser;
-import com.sinjinsong.icourse.core.domain.entity.user.UserDO;
-import com.sinjinsong.icourse.core.enumeration.user.UserStatus;
-import com.sinjinsong.icourse.core.service.user.UserService;
+import com.sinjinsong.icourse.core.domain.dto.user.AbstractUserDTO;
+import com.sinjinsong.icourse.core.service.user.impl.UserQueryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private UserService userService;
+    private UserQueryServiceImpl userQueryService;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDO user = userService.findByUsername(username);
+        AbstractUserDTO user = userQueryService.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
-        //用户没有任何身份
+            //用户没有任何身份
         } else if (user.getRoles().isEmpty()) {
             throw new UsernameNotFoundException(username);
         }
@@ -34,8 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                user.getUserStatus() != UserStatus.UNACTIVATED,
-                user.getUserStatus() != UserStatus.FORBIDDEN,
+                user.isValid(),
+                user.isValid(),
                 true,
                 true,
                 user.getRoles().stream().map((r) -> new SimpleGrantedAuthority(r.getRoleName().toUpperCase())).collect(Collectors.toList())

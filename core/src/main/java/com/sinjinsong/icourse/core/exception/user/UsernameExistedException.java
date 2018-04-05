@@ -7,7 +7,7 @@ import com.sinjinsong.icourse.common.exception.annotation.RestResponseStatus;
 import org.springframework.http.HttpStatus;
 
 @RestResponseStatus(value = HttpStatus.CONFLICT, code = 1)
-@RestField("name")
+@RestField("username")
 public class UsernameExistedException extends BaseRestException {
     public UsernameExistedException(String name) {
         super(name);

@@ -1,7 +1,7 @@
 package com.sinjinsong.icourse.core.domain.dto.user;
 
 
-import com.sinjinsong.icourse.core.enumeration.user.UserMode;
+import com.sinjinsong.icourse.core.enumeration.user.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +16,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDTO implements Serializable{
+    @NotNull
     private String username;
-    private String phone;
-    private String email;
     @NotNull
     private String password;
     @NotNull
-    private UserMode userMode;
+    private UserType userType;
 }

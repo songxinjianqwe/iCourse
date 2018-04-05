@@ -98,28 +98,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //检查用户名是否重复
                 .antMatchers(HttpMethod.GET, "/users/*/duplication").permitAll()
                 //注册
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
-                //获取头像
-                .antMatchers(HttpMethod.GET, "/users/*/avatar").permitAll()
+                .antMatchers(HttpMethod.POST, "/students").permitAll()
                 //用户激活
-                .antMatchers(HttpMethod.POST, "/users/*/mail_validation").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/*/activation").permitAll()
+                .antMatchers(HttpMethod.POST, "/students/*/mail_validation").permitAll()
+                .antMatchers(HttpMethod.POST, "/students/*/activation").permitAll()
                 //用户申请忘记密码
-                .antMatchers(HttpMethod.POST, "/users/*/password/reset_validation").permitAll()
+                .antMatchers(HttpMethod.POST, "/students/*/password/reset_validation").permitAll()
                 //用户忘记密码后重置密码
-                .antMatchers(HttpMethod.PUT, "/users/*/password").permitAll()
+                .antMatchers(HttpMethod.PUT, "/students/*/password").permitAll()
                 //获取token
                 .antMatchers(HttpMethod.POST, "/tokens").permitAll() 
-                .antMatchers(HttpMethod.GET,"/news").permitAll()
-                .antMatchers(HttpMethod.GET,"/news/*").permitAll()
-                .antMatchers(HttpMethod.GET,"/news/query/latest").permitAll()
-                .antMatchers(HttpMethod.GET,"/products/categories").permitAll()
-                .antMatchers(HttpMethod.GET,"/products/categories/*").permitAll()
-                .antMatchers(HttpMethod.GET,"/products/categories/on_board").permitAll()
-                .antMatchers(HttpMethod.GET,"/products/by_category/*").permitAll()
-                .antMatchers(HttpMethod.GET,"/products/by_category/*/simple").permitAll()
-                .antMatchers(HttpMethod.GET,"/products/*").permitAll()
-                .antMatchers(HttpMethod.GET,"/ads").permitAll()
                 
                 //除上面外的所有请求全部需要鉴权认证
                 .and().authorizeRequests().anyRequest().authenticated().and();

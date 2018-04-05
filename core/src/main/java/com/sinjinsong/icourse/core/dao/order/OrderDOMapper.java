@@ -6,6 +6,8 @@ import com.sinjinsong.icourse.core.domain.entity.order.OrderDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface OrderDOMapper {
     /**
@@ -40,9 +42,7 @@ public interface OrderDOMapper {
      * @mbggenerated
      */
     int updateByPrimaryKeySelective(OrderDO record);
-
-   
-
     Page<OrderDO> findAll(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
     Page<OrderDO> findByCondition(@Param("condition") OrderQueryConditionDTO condition, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+    List<OrderDO> findByInstitutionSettlementId(@Param("institution_settlement_id") Long institutionId);
 }

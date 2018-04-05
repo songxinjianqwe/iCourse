@@ -4,14 +4,13 @@ package com.sinjinsong.icourse.core.controller.token;
 import com.sinjinsong.icourse.common.exception.RestValidationException;
 import com.sinjinsong.icourse.common.security.domain.JWTUser;
 import com.sinjinsong.icourse.common.security.token.TokenManager;
-import com.sinjinsong.icourse.common.util.SpringContextUtil;
 import com.sinjinsong.icourse.core.domain.dto.user.LoginDTO;
 import com.sinjinsong.icourse.core.domain.dto.user.LoginSuccessResult;
-import com.sinjinsong.icourse.core.domain.entity.user.UserDO;
-import com.sinjinsong.icourse.core.enumeration.user.UserStatus;
+import com.sinjinsong.icourse.core.domain.dto.user.AbstractUserDTO;
+import com.sinjinsong.icourse.core.enumeration.student.StudentStatus;
 import com.sinjinsong.icourse.core.exception.security.LoginInfoInvalidException;
 import com.sinjinsong.icourse.core.exception.security.UserStatusInvalidException;
-import com.sinjinsong.icourse.core.security.LoginHandler;
+import com.sinjinsong.icourse.core.service.user.UserQueryService;
 import com.sinjinsong.icourse.core.util.CosUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +43,9 @@ public class TokenController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private CosUtil cosUtil;
+    @Autowired
+    private UserQueryService userQueryService;
+    
     /**
      * 1.用户登录时，先经过自定义的passcard_filter过滤器，
      * 该过滤器继承了AbstractAuthenticationProcessingFilter，
@@ -62,10 +64,9 @@ public class TokenController {
      * @param result
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ApiOperation(value = "登录", response = LoginSuccessResult.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 401, message = "验证码错误"),
             @ApiResponse(code = 400, message = "登录信息不完整"),
             @ApiResponse(code = 401, message = "用户名或密码错误"),
             @ApiResponse(code = 401, message = "用户未激活")
@@ -76,11 +77,9 @@ public class TokenController {
         if (result.hasErrors()) {
             throw new RestValidationException(result.getFieldErrors());
         }
-    
-        LoginHandler loginHandler = SpringContextUtil.getBean("LoginHandler", loginDTO.getUserMode().toString().toLowerCase());
+        AbstractUserDTO user = userQueryService.findByUsername(loginDTO.getUsername());
         //下面进行校验
-        UserDO user = loginHandler.handle(loginDTO);
-        log.info("{}", user);
+        log.info("user: {}", user);
         String username = null;
         if (user != null) {
             username = user.getUsername();
@@ -90,9 +89,9 @@ public class TokenController {
         try {
             authentication = authenticationManager.authenticate(authenticationToken);
         } catch (LockedException e) {
-            throw new UserStatusInvalidException(UserStatus.FORBIDDEN.toString());
+            throw new UserStatusInvalidException(StudentStatus.FORBIDDEN.toString());
         } catch (DisabledException e) {
-            throw new UserStatusInvalidException(UserStatus.UNACTIVATED.toString());
+            throw new UserStatusInvalidException(StudentStatus.UNACTIVATED.toString());
         } catch (AuthenticationException e) {
             throw new LoginInfoInvalidException(loginDTO);
         }
@@ -105,7 +104,7 @@ public class TokenController {
         return new LoginSuccessResult(user.getId(), username, token);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping
     @ApiOperation(value = "登出", authorizations = {@Authorization("登录权限")})
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "未登录")
@@ -114,7 +113,7 @@ public class TokenController {
         tokenManager.deleteToken(user.getUsername());
     }
     
-    @RequestMapping(value = "/cos", method = RequestMethod.GET)
+    @GetMapping("/cos")
     @ApiOperation(value = "获取腾讯云COS的上传Token", authorizations = {@Authorization("登录权限")})
     public String requestCosToken(@RequestParam("bucket") String bucket,@RequestParam("cosPath") String cosPath) {
         return cosUtil.getSign(bucket,cosPath);
