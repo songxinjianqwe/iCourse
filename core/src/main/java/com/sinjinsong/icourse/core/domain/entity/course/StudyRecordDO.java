@@ -1,14 +1,19 @@
 package com.sinjinsong.icourse.core.domain.entity.course;
 
+import com.sinjinsong.icourse.core.domain.entity.order.OrderDO;
 import com.sinjinsong.icourse.core.domain.entity.student.StudentDO;
 import com.sinjinsong.icourse.core.enumeration.course.StudyStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class StudyRecordDO {
     /**
      *
@@ -17,6 +22,7 @@ public class StudyRecordDO {
      *
      * @mbggenerated
      */
+    @NotNull
     private Long id;
 
     /**
@@ -63,4 +69,5 @@ public class StudyRecordDO {
      * @mbggenerated
      */
     private StudyStatus status;
+    private OrderDO order;
 }

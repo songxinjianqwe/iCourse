@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
  */
 @RestResponseStatus(value = HttpStatus.FORBIDDEN,code=1)
 @RestField("role")
-public class AccessDeniedException extends BaseRestException {
-    public AccessDeniedException(String role){
+public class RestAccessDeniedException extends BaseRestException {
+    public RestAccessDeniedException(String role){
         super(role);
     }
 }

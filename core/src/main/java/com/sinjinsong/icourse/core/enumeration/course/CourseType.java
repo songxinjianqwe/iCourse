@@ -8,7 +8,7 @@ import java.util.Map;
  * @date 2018/4/5
  */
 public enum CourseType {
-    C_PLUS_PLUS(0, "C++"), JAVA(1, "Java"), FrontEnd(2, "前端"), MachineLearning(3, "机器学习");
+    BACKEND(0, "后端开发"), DATA_ANALYZING(1, "数据分析"), FRONTEND(2, "前端开发"), MACHINE_LEARNING(3, "机器学习");
     
     private int code;
     private String desc;
@@ -28,5 +28,13 @@ public enum CourseType {
 
     public static CourseType getByCode(int code) {
         return map.get(code);
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }

@@ -2,7 +2,7 @@ package com.sinjinsong.icourse.core.controller.token;
 
 
 import com.sinjinsong.icourse.common.exception.RestValidationException;
-import com.sinjinsong.icourse.common.security.domain.JWTUser;
+import com.sinjinsong.icourse.common.security.domain.JwtUser;
 import com.sinjinsong.icourse.common.security.token.TokenManager;
 import com.sinjinsong.icourse.core.domain.dto.user.LoginDTO;
 import com.sinjinsong.icourse.core.domain.dto.user.LoginSuccessResult;
@@ -109,7 +109,7 @@ public class TokenController {
     @ApiResponses(value = {
             @ApiResponse(code = 401, message = "未登录")
     })
-    public void logout(@AuthenticationPrincipal JWTUser user) {
+    public void logout(@AuthenticationPrincipal JwtUser user) {
         tokenManager.deleteToken(user.getUsername());
     }
     

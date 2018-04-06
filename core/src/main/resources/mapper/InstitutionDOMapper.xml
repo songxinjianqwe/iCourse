@@ -86,5 +86,40 @@
         select
         <include refid="Base_Column_List"/>
         from institution
+        order by id
     </select>
+
+    <select id="findAllByStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from institution
+        where status = #{status}
+        order by id
+    </select>
+
+    <update id="updateStatusBatch">
+        update institution
+        set status = #{status.code}
+        where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="findByClassId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from institution
+        where id =
+        (
+        select institution_id from course
+        where id =
+        (
+        select course_id from class
+        where id = #{classId}
+        )
+        )
+    </select>
+    
+    
 </mapper>

@@ -1,12 +1,14 @@
 package com.sinjinsong.icourse.core.domain.entity.course;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ClassDO {
     /**
      *
@@ -33,7 +35,7 @@ public class ClassDO {
      *
      * @mbggenerated
      */
-    private CourseDO course;
+    private Long courseId;
 
     /**
      *

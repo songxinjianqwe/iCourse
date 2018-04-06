@@ -6,9 +6,12 @@ import com.sinjinsong.icourse.core.dao.student.StudentDOMapper;
 import com.sinjinsong.icourse.core.domain.entity.student.StudentDO;
 import com.sinjinsong.icourse.core.enumeration.student.StudentStatus;
 import com.sinjinsong.icourse.core.exception.user.UserNotFoundException;
+import com.sinjinsong.icourse.core.exception.user.UsernameExistedException;
 import com.sinjinsong.icourse.core.service.student.StudentService;
+import com.sinjinsong.icourse.core.service.user.UserQueryService;
 import com.sinjinsong.icourse.core.service.vip.VipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,8 @@ public class StudentServiceImpl implements StudentService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private VipService vipService;
+    @Autowired
+    private UserQueryService userQueryService;
 
     @Transactional(readOnly = true)
     @Override
@@ -45,6 +50,9 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public void save(StudentDO studentDO) {
+        if (userQueryService.exists(studentDO.getUsername())) {
+            throw new UsernameExistedException(studentDO.getUsername());
+        }
         //对密码进行加密
         studentDO.setPassword(passwordEncoder.encode(studentDO.getPassword()));
         studentDO.setRegTime(LocalDateTime.now());
@@ -53,17 +61,19 @@ public class StudentServiceImpl implements StudentService {
         studentDO.setConsumptions(0d);
         studentDO.setVipLevel(1);
         studentDOMapper.insert(studentDO);
-        //添加用户的角色，每个用户至少有一个user角色
+
         long roleId = roleDOMapper.findRoleIdByRoleName("ROLE_STUDENT");
         roleDOMapper.insertUserRole(studentDO.getId(), roleId);
     }
-    
+
     @Transactional
     @Override
     public void update(StudentDO userDO) {
+        userDO.setPassword(null);
         studentDOMapper.updateByPrimaryKeySelective(userDO);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @Transactional(readOnly = true)
     @Override
     public PageInfo<StudentDO> findAll(int pageNum, int pageSize) {

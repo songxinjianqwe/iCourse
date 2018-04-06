@@ -25,7 +25,7 @@
         <!-- 指定日志输出器 -->
         <setting name="logImpl" value="LOG4J"/>
     </settings>
-
+    
     <typeHandlers>
         <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.OrderStatusTypeHandler"
                      javaType="com.sinjinsong.icourse.core.enumeration.order.OrderStatus"></typeHandler>
@@ -33,5 +33,11 @@
                      javaType="com.sinjinsong.icourse.core.enumeration.student.StudentStatus"></typeHandler>
         <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.InstitutionStatusTypeHandler"
                      javaType="com.sinjinsong.icourse.core.enumeration.institution.InstitutionStatus"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.CourseTypeTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.course.CourseType"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.PayTypeTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.order.PayType"></typeHandler>
+        <typeHandler handler="com.sinjinsong.icourse.core.enumeration.conversion.StudyStatusTypeHandler"
+                     javaType="com.sinjinsong.icourse.core.enumeration.course.StudyStatus"></typeHandler>
     </typeHandlers>
 </configuration>

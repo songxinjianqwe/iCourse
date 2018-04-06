@@ -2,15 +2,20 @@ package com.sinjinsong.icourse.core.domain.entity.course;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sinjinsong.icourse.common.properties.DateTimeProperties;
+import com.sinjinsong.icourse.core.domain.entity.institution.InstitutionDO;
 import com.sinjinsong.icourse.core.enumeration.course.CourseType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CourseDO {
     /**
      *
@@ -67,4 +72,6 @@ public class CourseDO {
      */
     @JsonFormat(pattern = DateTimeProperties.LOCAL_DATE_TIME_PATTERN)
     private LocalDateTime placeTime;
+    private List<ClassDO> classes;
+    private InstitutionDO institution;
 }

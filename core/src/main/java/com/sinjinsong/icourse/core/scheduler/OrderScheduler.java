@@ -1,7 +1,10 @@
 package com.sinjinsong.icourse.core.scheduler;
 
 
+import com.sinjinsong.icourse.core.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -56,14 +59,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class OrderScheduler {
-//    @Autowired
-//    private OrderService orderService;
-//
-//    /**
-//     * 每隔1分钟将超时订单状态设置为超时
-//     */
-////    @Scheduled(fixedRate = 60 * 1000)
-//    public void clearTimeOutOrders() {
-//        orderService.updateTimeOutOrders();
-//    }
+    @Autowired
+    private OrderService orderService;
+
+    /**
+     * 每隔1分钟将超时订单状态设置为超时
+     */
+    @Scheduled(initialDelay = 60 * 1000, fixedRate = 60 * 1000)
+    public void clearTimeOutOrders() {
+        orderService.updateTimeOutOrders();
+    }
 }

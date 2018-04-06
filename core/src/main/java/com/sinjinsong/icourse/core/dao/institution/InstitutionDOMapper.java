@@ -2,8 +2,11 @@ package com.sinjinsong.icourse.core.dao.institution;
 
 import com.github.pagehelper.Page;
 import com.sinjinsong.icourse.core.domain.entity.institution.InstitutionDO;
+import com.sinjinsong.icourse.core.enumeration.institution.InstitutionStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface InstitutionDOMapper {
@@ -41,7 +44,11 @@ public interface InstitutionDOMapper {
     int updateByPrimaryKeySelective(InstitutionDO record);
 
     InstitutionDO findByUsername(@Param("username") String username);
-
+    
 
     Page<InstitutionDO> findAll(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+    Page<InstitutionDO> findAllByStatus(@Param("status") InstitutionStatus status, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+    void updateStatusBatch(@Param("ids") List<Long> ids,@Param("status") InstitutionStatus status);
+
+    InstitutionDO findByClassId(@Param("classId") Long classId);
 }

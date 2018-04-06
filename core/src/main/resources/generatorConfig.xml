@@ -43,7 +43,7 @@
         </javaClientGenerator>
         
         <table tableName="institution_settlement"
-               domainObjectName="institutionSettlementDO"
+               domainObjectName="InstitutionSettlementDO"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

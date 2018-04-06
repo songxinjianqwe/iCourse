@@ -6,12 +6,13 @@ import com.sinjinsong.icourse.common.exception.annotation.RestResponseStatus;
 import org.springframework.http.HttpStatus;
 
 /**
- * Created by SinjinSong on 2017/10/14.
+ * @author sinjinsong
+ * @date 2018/4/6
  */
-@RestResponseStatus(value= HttpStatus.FORBIDDEN,code=2)
-@RestField("userId")
-public class PaymentPasswordInCorrectException extends BaseRestException {
-    public PaymentPasswordInCorrectException(Long userId){
-        super(userId);
+@RestField("alipay_username")
+@RestResponseStatus(value = HttpStatus.BAD_REQUEST, code = 40013)
+public class AccountNotBindException extends BaseRestException {
+    public AccountNotBindException(String alipayUsername) {
+        super(alipayUsername);
     }
 }

@@ -110,8 +110,8 @@
     </select>
     
     <select id="findVipLevelByConsumptions" resultType="int" >
-        select min(vip_level)
+        select max(vip_level)
         from vip_discount
-        where least_consumptions <= #{consumptions}
+        where least_consumptions &lt;= #{consumptions}
     </select>
 </mapper>

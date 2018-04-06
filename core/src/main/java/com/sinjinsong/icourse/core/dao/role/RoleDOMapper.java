@@ -40,5 +40,5 @@ public interface RoleDOMapper {
     int updateByPrimaryKeySelective(RoleDO record);
     List<RoleDO> findByUserId(Long userId);
     long findRoleIdByRoleName(@Param("role") String role);
-    void insertUserRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
+    void insertUserRole(@Param("studentId") Long userId, @Param("roleId") Long roleId);
 }

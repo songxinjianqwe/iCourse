@@ -3,14 +3,17 @@ package com.sinjinsong.icourse.core.domain.entity.institution;
 import com.sinjinsong.icourse.core.domain.entity.role.RoleDO;
 import com.sinjinsong.icourse.core.enumeration.institution.InstitutionStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class InstitutionDO {
     /**
      *
@@ -28,7 +31,9 @@ public class InstitutionDO {
      *
      * @mbggenerated
      */
+    @NotNull
     private String username;
+    @NotNull
     private String password;
 
     /**
@@ -38,6 +43,7 @@ public class InstitutionDO {
      *
      * @mbggenerated
      */
+    @NotNull
     private String location;
 
     /**
@@ -47,6 +53,7 @@ public class InstitutionDO {
      *
      * @mbggenerated
      */
+    @NotNull
     private String description;
 
     /**

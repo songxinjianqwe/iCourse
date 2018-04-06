@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
@@ -24,16 +23,13 @@ import org.springframework.web.cors.CorsUtils;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTAuthenticationEntryPoint unauthorizedHandler;
     private UserDetailsService userDetailsService;
-    private AccessDeniedHandler accessDeniedHandler;
     private PasswordEncoder passwordEncoder;
     @Autowired
     public SecurityConfig(JWTAuthenticationEntryPoint unauthorizedHandler,
                           UserDetailsService userDetailsService,
-                          AccessDeniedHandler accessDeniedHandler,
                           PasswordEncoder passwordEncoder) {
         this.unauthorizedHandler = unauthorizedHandler;
         this.userDetailsService = userDetailsService;
-        this.accessDeniedHandler = accessDeniedHandler;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -64,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler).and()
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 //添加JWTFilter
@@ -99,6 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/users/*/duplication").permitAll()
                 //注册
                 .antMatchers(HttpMethod.POST, "/students").permitAll()
+                .antMatchers(HttpMethod.POST, "/institutions").permitAll()
+                
                 //用户激活
                 .antMatchers(HttpMethod.POST, "/students/*/mail_validation").permitAll()
                 .antMatchers(HttpMethod.POST, "/students/*/activation").permitAll()

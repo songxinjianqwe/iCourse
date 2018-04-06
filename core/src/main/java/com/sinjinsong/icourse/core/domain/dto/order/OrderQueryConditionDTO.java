@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class OrderQueryConditionDTO implements Serializable{
-    private Long userId;
+    private Long studentId;
+    private Long institutionId;
     @JsonFormat(pattern = DateTimeProperties.LOCAL_DATE_TIME_PATTERN)
     private LocalDateTime begin;
     @JsonFormat(pattern = DateTimeProperties.LOCAL_DATE_TIME_PATTERN)

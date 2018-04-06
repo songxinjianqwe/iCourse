@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public enum InstitutionStatus {
 
-    UOT_APPROVED(0, "未批准"), APPROVED(1, "已批准");
+    NOT_APPROVED(0, "未批准"), APPROVED(1, "已批准");
     private int code;
     private String desc;
 

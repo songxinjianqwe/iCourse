@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Created by SinjinSong on 2017/5/8.
  */
-public class JWTUser implements UserDetails {
+public class JwtUser implements UserDetails {
     private Long id;
     private String username;
     private String password;
@@ -19,7 +19,7 @@ public class JWTUser implements UserDetails {
     
     private Collection<? extends GrantedAuthority> authorities;
     
-    public JWTUser(Long id,String username, String password, boolean isEnabled, boolean isAccountNonLocked, boolean isAccountNonExpired, boolean isCredentialsNonExpired, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUser(Long id, String username, String password, boolean isEnabled, boolean isAccountNonLocked, boolean isAccountNonExpired, boolean isCredentialsNonExpired, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;

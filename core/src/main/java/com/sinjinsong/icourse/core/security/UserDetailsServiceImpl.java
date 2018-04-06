@@ -1,7 +1,7 @@
 package com.sinjinsong.icourse.core.security;
 
 
-import com.sinjinsong.icourse.common.security.domain.JWTUser;
+import com.sinjinsong.icourse.common.security.domain.JwtUser;
 import com.sinjinsong.icourse.core.domain.dto.user.AbstractUserDTO;
 import com.sinjinsong.icourse.core.service.user.impl.UserQueryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else if (user.getRoles().isEmpty()) {
             throw new UsernameNotFoundException(username);
         }
-        return new JWTUser(
+        return new JwtUser(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),

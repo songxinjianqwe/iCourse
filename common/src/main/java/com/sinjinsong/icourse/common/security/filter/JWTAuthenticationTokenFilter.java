@@ -26,7 +26,7 @@ public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Autowired
     private TokenManager tokenManager;
-    
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -37,12 +37,13 @@ public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
         String token = request.getHeader(AuthenticationProperties.AUTH_HEADER);
         //验证token，如果无效，结果返回exception；如果有效，结果返回username
         TokenCheckResult result = tokenManager.checkToken(token);
+        UserDetails userDetails = null;
         if (!result.isValid()) {
             log.info("Token无效");
             request.setAttribute(AuthenticationProperties.EXCEPTION_ATTR_NAME, result.getException());
         } else {
             log.info("checking authentication {}", result);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(result.getUsername());
+            userDetails = userDetailsService.loadUserByUsername(result.getUsername());
             //如果登陆后首次访问
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
