@@ -3,20 +3,18 @@ package com.sinjinsong.icourse.core.controller.order;
 import com.github.pagehelper.PageInfo;
 import com.sinjinsong.icourse.common.exception.RestValidationException;
 import com.sinjinsong.icourse.common.properties.PageProperties;
-import com.sinjinsong.icourse.common.security.domain.JwtUser;
 import com.sinjinsong.icourse.core.domain.dto.order.OrderQueryConditionDTO;
 import com.sinjinsong.icourse.core.domain.entity.order.OrderDO;
-import com.sinjinsong.icourse.core.domain.entity.student.StudentDO;
 import com.sinjinsong.icourse.core.enumeration.order.OrderStatus;
 import com.sinjinsong.icourse.core.exception.order.OrderNotFoundException;
 import com.sinjinsong.icourse.core.exception.order.OrderStateIllegalException;
+import com.sinjinsong.icourse.core.service.course.CourseService;
 import com.sinjinsong.icourse.core.service.order.OrderService;
 import com.sinjinsong.icourse.core.service.pay.AccountService;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,14 +32,15 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private AccountService accountService;
-
-    @PreAuthorize("hasRole('STUDENT')")
+    @Autowired
+    private CourseService courseService;
+    
+    @PreAuthorize("hasRole('STUDENT') or hasRole('INSTITUTION')")
     @PostMapping
-    public OrderDO placeOrder(@RequestBody @Valid @ApiParam(value = "订单对象") OrderDO order, BindingResult bindingResult, @AuthenticationPrincipal JwtUser student) {
+    public OrderDO placeOrder(@RequestBody @Valid @ApiParam(value = "订单对象") OrderDO order, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RestValidationException(bindingResult.getFieldErrors());
         }
-        order.setStudent(StudentDO.builder().id(student.getId()).build());
         return orderService.placeOrder(order);
     }
 
@@ -85,6 +84,7 @@ public class OrderController {
         } else {
             throw new OrderStateIllegalException(order.getStatus().toString());
         }
+        order.getClassDO().setCourse(courseService.findCourseById(order.getClassDO().getCourseId()));
         return order;
     }
 }

@@ -1,6 +1,7 @@
 package com.sinjinsong.icourse.core.enumeration.order;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 @Getter
 public enum OrderStatus {
-    UNPAID(0, "未付款"), PAID(1, "已付款"), TIME_OUT(2, "超时"), CANCELED(3, "取消");
+    UNPAID(0, "未付款"), PAID(1, "已付款"), TIME_OUT(2, "已超时"), CANCELED(3, "已取消");
     private int code;
     private String desc;
 
@@ -30,5 +31,14 @@ public enum OrderStatus {
 
     public static OrderStatus getByCode(int code) {
         return map.get(code);
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    @JsonValue
+    public String getDesc() {
+        return desc;
     }
 }

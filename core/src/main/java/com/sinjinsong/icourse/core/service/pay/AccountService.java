@@ -1,5 +1,6 @@
 package com.sinjinsong.icourse.core.service.pay;
 
+import com.sinjinsong.icourse.core.domain.dto.pay.AccountResult;
 import com.sinjinsong.icourse.core.domain.dto.pay.PayDTO;
 import com.sinjinsong.icourse.core.domain.entity.order.OrderDO;
 
@@ -14,18 +15,23 @@ public interface AccountService {
      * @param userId
      * @param payDTO
      */
-    void bind(Long userId,PayDTO payDTO);
+    AccountResult bind(Long userId,PayDTO payDTO);
 
     /**
      * 用该账号去支付一个订单
      * @param orderId
      * @param payDTO
      */
-    void pay(Long orderId, PayDTO payDTO);
+    OrderDO pay(Long orderId, PayDTO payDTO);
 
     /**
      * 退款至支付该订单的支付宝账号
      * @param orderDO
      */
     void refund(OrderDO orderDO);
+    
+    AccountResult isBound(Long userId);
+    
+    void incrementManagerValue(Double value);
+    void incrementInstitutionValue(Long institutionId,Double value);
 }

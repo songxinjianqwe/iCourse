@@ -63,4 +63,5 @@ public class ClassDO {
      * @mbggenerated
      */
     private Integer currentCount;
+    private CourseDO course;
 }

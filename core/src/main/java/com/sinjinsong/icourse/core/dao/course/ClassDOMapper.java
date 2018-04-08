@@ -1,7 +1,6 @@
 package com.sinjinsong.icourse.core.dao.course;
 
 import com.sinjinsong.icourse.core.domain.entity.course.ClassDO;
-import com.sinjinsong.icourse.core.domain.entity.institution.InstitutionDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -44,5 +43,5 @@ public interface ClassDOMapper {
     List<ClassDO> findByCourseId(Long courseId);
     
     int incrementCurrentCountConsistently(Long classId);
-    
+    int decrementCurrentCount(Long classId);
 }

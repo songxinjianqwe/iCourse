@@ -45,7 +45,6 @@ public class StudentDO {
      *
      * @mbggenerated
      */
-    @NotNull
     private String password;
 
     /**

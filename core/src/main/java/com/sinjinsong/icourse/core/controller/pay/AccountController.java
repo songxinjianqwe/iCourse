@@ -2,7 +2,9 @@ package com.sinjinsong.icourse.core.controller.pay;
 
 import com.sinjinsong.icourse.common.exception.RestValidationException;
 import com.sinjinsong.icourse.common.security.domain.JwtUser;
+import com.sinjinsong.icourse.core.domain.dto.pay.AccountResult;
 import com.sinjinsong.icourse.core.domain.dto.pay.PayDTO;
+import com.sinjinsong.icourse.core.domain.entity.order.OrderDO;
 import com.sinjinsong.icourse.core.service.pay.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,18 +26,25 @@ public class AccountController {
     
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/bind")
-    public void bindAccount(@RequestBody @Valid PayDTO payDTO, BindingResult bindingResult, @AuthenticationPrincipal JwtUser student) {
+    public AccountResult bindAccount(@RequestBody @Valid PayDTO payDTO, BindingResult bindingResult, @AuthenticationPrincipal JwtUser student) {
         if (bindingResult.hasErrors()) {
             throw new RestValidationException(bindingResult.getFieldErrors());
         }
-        accountService.bind(student.getId(), payDTO);
+        return accountService.bind(student.getId(), payDTO);
     }
     
     @PostMapping("/pay/{orderId}")
-    public void pay(@PathVariable("orderId") Long orderId, @RequestBody @Valid PayDTO payDTO, BindingResult bindingResult) {
+    public OrderDO pay(@PathVariable("orderId") Long orderId, @RequestBody @Valid PayDTO payDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             throw new RestValidationException(bindingResult.getFieldErrors());
         }
-        accountService.pay(orderId,payDTO);
+        return accountService.pay(orderId,payDTO);
+    }
+    
+    
+    
+    @GetMapping("/bind")
+    public AccountResult isBound(@AuthenticationPrincipal JwtUser user) {
+        return accountService.isBound(user.getId());
     }
 }

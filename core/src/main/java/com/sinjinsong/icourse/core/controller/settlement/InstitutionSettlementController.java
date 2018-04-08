@@ -44,6 +44,11 @@ public class InstitutionSettlementController {
     }
     
     
+    @GetMapping
+    public PageInfo<InstitutionSettlementDO> findAll(@RequestParam(value = "pageNum", required = false, defaultValue = PageProperties.DEFAULT_PAGE_NUM) @ApiParam(value = "页码，从1开始", defaultValue = PageProperties.DEFAULT_PAGE_NUM) Integer pageNum, @RequestParam(value = "pageSize", required = false, defaultValue = PageProperties.DEFAULT_PAGE_SIZE) @ApiParam(value = "每页记录数", defaultValue = PageProperties.DEFAULT_PAGE_SIZE) Integer pageSize) {
+        return institutionSettlementService.findAll( pageNum, pageSize);
+    }
+    
     @GetMapping("/institutions/{institutionId}")
     public PageInfo<InstitutionSettlementDO> findAllByInstitutionId(@PathVariable("institutionId") Long institutionId, @RequestParam(value = "pageNum", required = false, defaultValue = PageProperties.DEFAULT_PAGE_NUM) @ApiParam(value = "页码，从1开始", defaultValue = PageProperties.DEFAULT_PAGE_NUM) Integer pageNum, @RequestParam(value = "pageSize", required = false, defaultValue = PageProperties.DEFAULT_PAGE_SIZE) @ApiParam(value = "每页记录数", defaultValue = PageProperties.DEFAULT_PAGE_SIZE) Integer pageSize) {
         return institutionSettlementService.findAllByInstitutionId(institutionId, pageNum, pageSize);

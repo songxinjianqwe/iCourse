@@ -20,4 +20,6 @@ public interface InstitutionSettlementService {
     PageInfo<InstitutionSettlementDO> findAllByInstitutionId(Long institutionId, int pageNum, int pageSize);
     
     InstitutionStatistics findStatisticsByInstitutionId(Long institutionId);
+
+    PageInfo<InstitutionSettlementDO> findAll(int pageNum, int pageSize);
 }

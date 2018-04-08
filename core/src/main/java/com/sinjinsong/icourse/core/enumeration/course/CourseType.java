@@ -1,5 +1,7 @@
 package com.sinjinsong.icourse.core.enumeration.course;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +35,7 @@ public enum CourseType {
     public int getCode() {
         return code;
     }
-
+    @JsonValue
     public String getDesc() {
         return desc;
     }

@@ -1,5 +1,7 @@
 package com.sinjinsong.icourse.core.enumeration.student;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,8 @@ public enum StudentStatus {
     public void setCode(int code) {
         this.code = code;
     }
-
+    
+    @JsonValue
     public String getDesc() {
         return desc;
     }

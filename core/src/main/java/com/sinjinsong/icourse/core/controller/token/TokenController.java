@@ -101,7 +101,7 @@ public class TokenController {
         tokenManager.deleteToken(username);
         //申请新的token
         String token = tokenManager.createToken(username);
-        return new LoginSuccessResult(user.getId(), username, token);
+        return new LoginSuccessResult(user.getId(), username, token,user.getRoles());
     }
 
     @DeleteMapping
@@ -111,11 +111,5 @@ public class TokenController {
     })
     public void logout(@AuthenticationPrincipal JwtUser user) {
         tokenManager.deleteToken(user.getUsername());
-    }
-    
-    @GetMapping("/cos")
-    @ApiOperation(value = "获取腾讯云COS的上传Token", authorizations = {@Authorization("登录权限")})
-    public String requestCosToken(@RequestParam("bucket") String bucket,@RequestParam("cosPath") String cosPath) {
-        return cosUtil.getSign(bucket,cosPath);
     }
 }

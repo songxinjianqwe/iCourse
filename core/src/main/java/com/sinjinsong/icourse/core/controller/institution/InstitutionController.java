@@ -5,6 +5,7 @@ import com.sinjinsong.icourse.common.exception.RestValidationException;
 import com.sinjinsong.icourse.common.properties.PageProperties;
 import com.sinjinsong.icourse.core.domain.entity.institution.InstitutionDO;
 import com.sinjinsong.icourse.core.enumeration.institution.InstitutionStatus;
+import com.sinjinsong.icourse.core.exception.user.PasswordNotFoundException;
 import com.sinjinsong.icourse.core.exception.user.QueryUserModeNotFoundException;
 import com.sinjinsong.icourse.core.exception.user.UserNotFoundException;
 import com.sinjinsong.icourse.core.service.institution.InstitutionService;
@@ -36,6 +37,8 @@ public class InstitutionController {
     public InstitutionDO register(@RequestBody @Valid InstitutionDO institutionDO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RestValidationException(bindingResult.getFieldErrors());
+        } else if (institutionDO.getPassword() == null) {
+            throw new PasswordNotFoundException();
         }
         institutionService.register(institutionDO);
         return institutionDO;
@@ -60,7 +63,7 @@ public class InstitutionController {
     public PageInfo<InstitutionDO> findAllByStatus(@RequestParam("status") InstitutionStatus status, @RequestParam(value = "pageNum", required = false, defaultValue = PageProperties.DEFAULT_PAGE_NUM) @ApiParam(value = "页码，从1开始", defaultValue = PageProperties.DEFAULT_PAGE_NUM) Integer pageNum, @RequestParam(value = "pageSize", required = false, defaultValue = PageProperties.DEFAULT_PAGE_SIZE) @ApiParam(value = "每页记录数", defaultValue = PageProperties.DEFAULT_PAGE_SIZE) Integer pageSize) {
         return institutionService.findAllByStatus(status, pageNum, pageSize);
     }
-
+    
     @GetMapping("/query")
     public InstitutionDO findByKey(@RequestParam("key") String key, @RequestParam("mode") String mode) {
         InstitutionDO result = null;
@@ -76,7 +79,7 @@ public class InstitutionController {
         }
         return result;
     }
-    
+
     @PutMapping("/approval")
     @PreAuthorize("hasRole('MANAGER')")
     public void approveInstitutionBatch(@RequestBody List<Long> ids) {

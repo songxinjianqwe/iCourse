@@ -37,5 +37,9 @@ public interface ManagerDOMapper {
      * @mbggenerated
      */
     int updateByPrimaryKeySelective(ManagerDO record);
+
+    ManagerDO findManager();
+
     ManagerDO findByUsername(@Param("username") String username);
+
 }

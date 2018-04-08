@@ -2,17 +2,15 @@ package com.sinjinsong.icourse.core.controller.student;
 
 import com.github.pagehelper.PageInfo;
 import com.sinjinsong.icourse.common.exception.RestValidationException;
-import com.sinjinsong.icourse.common.properties.AuthenticationProperties;
 import com.sinjinsong.icourse.common.properties.PageProperties;
 import com.sinjinsong.icourse.common.security.verification.VerificationManager;
-import com.sinjinsong.icourse.common.util.UUIDUtil;
+import com.sinjinsong.icourse.core.domain.dto.student.StudentDiscountDTO;
 import com.sinjinsong.icourse.core.domain.entity.student.StudentDO;
 import com.sinjinsong.icourse.core.enumeration.student.StudentStatus;
 import com.sinjinsong.icourse.core.exception.security.ActivationCodeValidationException;
 import com.sinjinsong.icourse.core.exception.user.PasswordNotFoundException;
 import com.sinjinsong.icourse.core.exception.user.QueryUserModeNotFoundException;
 import com.sinjinsong.icourse.core.exception.user.UserNotFoundException;
-import com.sinjinsong.icourse.core.service.email.EmailService;
 import com.sinjinsong.icourse.core.service.student.StudentService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author sinjinsong
@@ -39,10 +36,7 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private VerificationManager verificationManager;
-    @Autowired
-    private AuthenticationProperties authenticationProperties;
-    @Autowired
-    private EmailService emailService;
+    
 
     @GetMapping("/query")
     @PostAuthorize("(hasRole('MANAGER')) or (returnObject.username ==  principal.username)")
@@ -71,7 +65,6 @@ public class StudentController {
         return result;
     }
 
-
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "创建用户", response = StudentDO.class)
@@ -87,15 +80,6 @@ public class StudentController {
             throw new PasswordNotFoundException();
         }
         studentService.save(student);
-        
-        String activationCode = UUIDUtil.uuid();
-        //发送验证邮件
-        verificationManager.createVerificationCode(activationCode, String.valueOf(student.getId()), authenticationProperties.getActivationCodeExpireTime());
-        log.info("{}     {}", student.getEmail(), student.getId());
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", student.getId());
-        params.put("activationCode", activationCode);
-        emailService.sendHTML(student.getEmail(), "activation", params, null);
         return student;
     }
 
@@ -129,11 +113,12 @@ public class StudentController {
             @ApiResponse(code = 403, message = "只有管理员或用户自己能更新用户信息"),
 
     })
-    public void updateUser(@RequestBody @Valid @ApiParam(value = "用户信息，用户的用户名、密码、昵称、邮箱不可为空", required = true) StudentDO student, BindingResult result) {
+    public StudentDO updateUser(@RequestBody @Valid @ApiParam(value = "用户信息，用户的用户名、密码、昵称、邮箱不可为空", required = true) StudentDO student, BindingResult result) {
         if (result.hasErrors()) {
             throw new RestValidationException(result.getFieldErrors());
         }
         studentService.update(student);
+        return student;
     }
 
     @GetMapping
@@ -143,4 +128,11 @@ public class StudentController {
     public PageInfo<StudentDO> findAll(@RequestParam(value = "pageNum", required = false, defaultValue = PageProperties.DEFAULT_PAGE_NUM) @ApiParam(value = "页码，从1开始", defaultValue = PageProperties.DEFAULT_PAGE_NUM) Integer pageNum, @RequestParam(value = "pageSize", required = false, defaultValue = PageProperties.DEFAULT_PAGE_SIZE) @ApiParam(value = "每页记录数", defaultValue = PageProperties.DEFAULT_PAGE_SIZE) Integer pageSize) {
         return studentService.findAll(pageNum, pageSize);
     }
+    
+    
+    @GetMapping("/query/fuzzy/{username}")
+    public List<StudentDiscountDTO> fuzzyQueryStudentUsername(@PathVariable("username") String username){
+        return studentService.findIdAndUsernameAndDiscountByUsernameContaining(username);
+    }
+    
 }

@@ -1,5 +1,7 @@
 package com.sinjinsong.icourse.core.enumeration.institution;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public enum InstitutionStatus {
     public int getCode() {
         return code;
     }
-
+    @JsonValue
     public String getDesc() {
         return desc;
     }

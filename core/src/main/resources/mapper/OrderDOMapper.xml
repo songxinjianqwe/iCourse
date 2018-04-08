@@ -147,7 +147,7 @@
         <include refid="Base_Column_List"/>
         from `order`
         where is_settled = 0  
-        and status = 1
+        and status = 1 and pay_type = 0
         and class_id in 
         (
         select class.id from class 
@@ -159,7 +159,7 @@
     
     <update id="setOrdersSettledBatch" >
         update `order`
-        set is_settled = 1
+        set is_settled = 1 
         where id in
          <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}

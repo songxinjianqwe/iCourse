@@ -1,5 +1,7 @@
 package com.sinjinsong.icourse.core.enumeration.order;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +23,8 @@ public enum PayType {
     public int getCode() {
         return code;
     }
-
+    
+    @JsonValue
     public String getDesc() {
         return desc;
     }
@@ -33,7 +36,7 @@ public enum PayType {
             map.put(status.code, status);
         }
     }
-
+    
     public static PayType getByCode(int code) {
         return map.get(code);
     }

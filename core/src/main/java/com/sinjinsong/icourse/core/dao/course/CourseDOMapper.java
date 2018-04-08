@@ -5,6 +5,8 @@ import com.sinjinsong.icourse.core.domain.entity.course.CourseDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface CourseDOMapper {
     /**
@@ -40,5 +42,7 @@ public interface CourseDOMapper {
     int updateByPrimaryKeySelective(CourseDO record);
     
     Page<CourseDO> findAllByInstitutionId(@Param("institutionId") Long institutionId, @Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
-
+    Page<CourseDO> findAllByPage(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
+    List<CourseDO> findAll(Long institutionId);
+    CourseDO findSimpleCourseById(Long courseId);
 }

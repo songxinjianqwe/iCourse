@@ -10,6 +10,8 @@ import com.sinjinsong.icourse.core.domain.entity.student.StudentDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface StudentDOMapper {
     /**
@@ -49,7 +51,7 @@ public interface StudentDOMapper {
     StudentDO findByEmail(@Param("email") String email);
 
     Page<StudentDO> findAll(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
-
+    List<StudentDO> findIdAndUsernameByUsernameContaining(@Param("username") String username);
 }
 
 

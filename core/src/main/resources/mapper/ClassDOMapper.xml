@@ -88,4 +88,11 @@
         and current_count &lt; threshold
     </update>
    
+    <update id="decrementCurrentCount">
+        update `class`
+        set current_count = current_count - 1 
+        where id = #{classId}
+    </update>
+   
+    
 </mapper>

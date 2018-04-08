@@ -43,4 +43,6 @@ public interface InstitutionSettlementDOMapper {
     Page<InstitutionSettlementDO> findAllByInstitutionId(@Param("institutionId") Long institutionId,@Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
 
     Double sumByInstitutionId(@Param("institutionId") Long institutionId);
+
+    Page<InstitutionSettlementDO> findAll(@Param("pageNum") int pageNum,@Param("pageSize") int pageSize);
 }

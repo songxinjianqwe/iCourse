@@ -44,8 +44,6 @@ public interface OrderDOMapper {
     int updateByPrimaryKeySelective(OrderDO record);
     Page<OrderDO> findAll(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
     Page<OrderDO> findByCondition(@Param("condition") OrderQueryConditionDTO condition, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
-    List<OrderDO> findOrdersByInstitutionSettlementId(@Param("institutionSettlementId") Long institutionSettlementId);
-    int countByInstitutionId(@Param("institutionId") Long institutionId);
     OrderDO findByStudentIdAndClassId(@Param("studentId") Long studentId,@Param("classId") Long classId);
     Page<OrderDO> findUnSettledOrders(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
     void setOrdersSettledBatch(@Param("ids") List<Long> orderIds);

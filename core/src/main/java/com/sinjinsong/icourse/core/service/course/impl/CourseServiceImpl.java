@@ -5,6 +5,7 @@ import com.sinjinsong.icourse.core.dao.course.ClassDOMapper;
 import com.sinjinsong.icourse.core.dao.course.CourseDOMapper;
 import com.sinjinsong.icourse.core.domain.dto.course.ClassDTO;
 import com.sinjinsong.icourse.core.domain.dto.course.CourseDTO;
+import com.sinjinsong.icourse.core.domain.dto.course.CourseDTOForCascadeSelector;
 import com.sinjinsong.icourse.core.domain.entity.course.ClassDO;
 import com.sinjinsong.icourse.core.domain.entity.course.CourseDO;
 import com.sinjinsong.icourse.core.domain.entity.institution.InstitutionDO;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author sinjinsong
@@ -65,14 +68,24 @@ public class CourseServiceImpl implements CourseService {
 
     @Transactional(readOnly = true)
     @Override
-    public CourseDO findCourseById(Long courseId) {
+    public CourseDO findCourseAndClassesById(Long courseId) {
         return courseDOMapper.selectByPrimaryKey(courseId);
+    }
+
+    @Override
+    public CourseDO findCourseById(Long courseId) {
+        return courseDOMapper.findSimpleCourseById(courseId);
     }
 
     @Transactional
     @Override
     public boolean chooseClass(Long classId) {
         return classDOMapper.incrementCurrentCountConsistently(classId) > 0;
+    }
+
+    @Override
+    public void unChooseClass(Long classId) {
+        classDOMapper.decrementCurrentCount(classId);
     }
 
     @Transactional(readOnly = true)
@@ -84,5 +97,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public InstitutionDO findInstitutionByClassId(Long classId) {
         return institutionService.findInstitutionByClassId(classId);
+    }
+
+    @Override
+    public PageInfo<CourseDO> findAll(int pageNum, int pageSize) {
+        return courseDOMapper.findAllByPage(pageNum,pageSize).toPageInfo();
+    }
+    
+    @Override
+    public List<CourseDTOForCascadeSelector> findAllByInstitutionId(Long institutionId) {
+        List<CourseDTOForCascadeSelector> result = new ArrayList<>();
+        courseDOMapper.findAll(institutionId).forEach(course -> {
+           List<CourseDTOForCascadeSelector.ClassDTOForCascadeSelector> classes = new ArrayList<>();
+           course.getClasses().forEach(classDO -> {
+               classes.add(new CourseDTOForCascadeSelector.ClassDTOForCascadeSelector(classDO.getName(), classDO.getId(),classDO.getPrice()));
+           });
+           result.add(new CourseDTOForCascadeSelector(course.getName(),course.getId(),classes));
+        });
+        return result;
     }
 }

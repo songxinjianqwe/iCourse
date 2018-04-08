@@ -63,6 +63,14 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="findManager" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from manager
+        limit 1
+    </select>
+    
     <select id="findByUsername" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

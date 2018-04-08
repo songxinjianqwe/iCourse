@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
  * @author sinjinsong
  * @date 2018/4/6
  */
-@RestField("alipay_username")
+@RestField("userId")
 @RestResponseStatus(value = HttpStatus.BAD_REQUEST, code = 40013)
 public class AccountNotBindException extends BaseRestException {
-    public AccountNotBindException(String alipayUsername) {
-        super(alipayUsername);
+    public AccountNotBindException(Long userId) {
+        super(userId);
     }
 }

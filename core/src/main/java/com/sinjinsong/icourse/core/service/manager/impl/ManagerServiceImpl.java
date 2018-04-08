@@ -15,6 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManagerServiceImpl implements ManagerService  {
     @Autowired
     private ManagerDOMapper mapper;
+
+    @Transactional(readOnly = true)
+    @Override
+    public ManagerDO findManager() {
+        return mapper.findManager();
+    }
     
     @Transactional(readOnly = true)
     @Override

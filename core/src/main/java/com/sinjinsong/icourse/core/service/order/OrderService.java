@@ -11,6 +11,7 @@ import java.util.List;
  * Created by SinjinSong on 2017/10/6.
  */
 public interface OrderService {
+
     OrderDO placeOrder(OrderDO order);
 
     PageInfo<OrderDO> findAll(Integer pageNum, Integer pageSize);
