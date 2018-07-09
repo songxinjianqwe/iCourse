@@ -28,8 +28,7 @@ public class StudyServiceImpl implements StudyService {
             studyRecordDO.getClassDO().setCourse(courseService.findCourseById(studyRecordDO.getClassDO().getCourseId()));
         });
     }
-
-
+    
     @Transactional
     @Override
     public void save(StudyRecordDO studyRecordDO) {

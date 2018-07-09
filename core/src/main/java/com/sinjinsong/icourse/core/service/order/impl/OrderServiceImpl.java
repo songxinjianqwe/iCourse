@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private CourseService courseService;
     @Autowired
     private StudyService studyService;
-    
+
     private void populateCourse(PageInfo<OrderDO> orders) {
         orders.getList().forEach(order -> {
             order.getClassDO().setCourse(courseService.findCourseById(order.getClassDO().getCourseId()));
@@ -47,8 +47,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDO placeOrder(OrderDO order) {
         Long classId = order.getClassDO().getId();
-        if (orderDOMapper.findByStudentIdAndClassId(order.getStudent().getId(), classId) != null) {
-            throw new CourseSelectDuplicationException(classId);
+        List<OrderDO> queryResult = orderDOMapper.findByStudentIdAndClassId(order.getStudent().getId(), classId);
+        if (queryResult.size() != 0 ){
+            if(queryResult.stream().anyMatch( o ->
+                 o.getStatus() == OrderStatus.UNPAID || o.getStatus() == OrderStatus.PAID)
+            ){
+                throw new CourseSelectDuplicationException(classId);
+            }
         }
         order.setInstitution(courseService.findInstitutionByClassId(classId));
         if (courseService.chooseClass(classId)) {
@@ -145,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
         populateCourse(orders);
         return orders;
     }
-    
+
     @Transactional
     @Override
     public void setOrdersSettledBatch(List<Long> orderIds) {
