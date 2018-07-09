@@ -74,4 +74,5 @@ public class CourseDO {
     private LocalDateTime placeTime;
     private List<ClassDO> classes;
     private InstitutionDO institution;
+    private String imageUrl;
 }
